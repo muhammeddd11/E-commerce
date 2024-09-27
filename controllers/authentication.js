@@ -17,6 +17,7 @@ exports.register = async (req, res) => {
       status: "success",
       message: "Your account has been created",
       token: createToken(newUser._id),
+      newUser,
     });
   } catch (err) {
     res.status(501).json({
@@ -44,10 +45,11 @@ exports.login = async (req, res) => {
       message: "Please re-login",
     });
   }
-
+  user.password = undefined;
   res.status(200).json({
     status: "success",
     message: "you are logged in",
     token: createToken(user._id),
+    user,
   });
 };
