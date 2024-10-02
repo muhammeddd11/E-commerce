@@ -7,7 +7,7 @@ const cartSchema = mongoose.Schema({
       required: true,
     },
   ],
-  shipingAddress: {
+  shippingAddress: {
     type: String,
     required: true,
   },
@@ -17,7 +17,7 @@ const cartSchema = mongoose.Schema({
     required: true,
   },
   zip: {
-    typr: String,
+    type: String,
     required: true,
   },
   country: {
@@ -32,6 +32,15 @@ const cartSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  status: {
+    type: String,
+    default: "pending",
+  },
+  totalPrice: Number,
 });
 cartSchema.virtual("id").get(function () {
   return this._id.toHexString();

@@ -27,7 +27,12 @@ exports.addProduct = async (req, res) => {
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
-
+    if (!products) {
+      return res.status(404).json({
+        status: "fail",
+        message: "No Product(s) found",
+      });
+    }
     res.status(200).json({
       status: "success",
       message: "products have been retrieved successfully",
@@ -47,7 +52,12 @@ exports.getProduct = async (req, res) => {
     const product = await Product.findOne({
       _id: req.params.id,
     });
-
+    if (!product) {
+      return res.status(404).json({
+        status: "fail",
+        message: "No Product(s) found",
+      });
+    }
     res.status(200).json({
       status: "success",
       message: "A product has been retrieved successfully",
