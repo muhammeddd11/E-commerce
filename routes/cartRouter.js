@@ -7,5 +7,7 @@ router
   .get(cartController.getCart)
   .post(cartController.updateCart)
   .delete(cartController.deleteCart);
+router.get("/checkout-session/:cartID", cartController.getCheckoutSession);
 router.route("/totalSales").get(cartController.getTotalSales);
+
 module.exports = router;

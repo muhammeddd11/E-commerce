@@ -1,5 +1,6 @@
 const Cart = require("../models/cartModel");
 const CartItem = require("../models/cartItemModel");
+const stride = require("stride")(process.env.STRIDE_API_KEY); //pass the secret key to get stride object;
 exports.addToCart = async (req, res) => {
   try {
     const cartItems = Promise.all(
@@ -167,4 +168,22 @@ exports.getTotalSales = async (req, res) => {
       err: err.message,
     });
   }
+};
+exports.getCheckoutSession = async (req, res) => {
+  //get currently cart
+  const cart = await Cart.findById(req.params.cartID);
+  // create checkout session
+  const session = await stride.checkout.sessions.create({
+    payment_method_types: ["card"],
+    success_url: `${req.protocol}://${req.get("host")}/`,
+    cancel_url: `${req.protocol}://${req.get("host")}/`,
+    //customer_email: req.user.email
+    client_reference_id: req.params.cartID,
+  });
+  //create session as response
+  res.status(200).json({
+    status: "success",
+    message: "payment request created successfully ",
+    session,
+  });
 };
